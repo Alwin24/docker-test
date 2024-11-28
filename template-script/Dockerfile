@@ -11,4 +11,4 @@ COPY . .
 RUN bun install
 
 # Command to run the application
-CMD ["bun", "run", "index.ts"]
+CMD ["bun", "run", "modified-index.ts"]

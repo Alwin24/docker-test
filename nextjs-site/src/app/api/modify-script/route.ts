@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Modify the template script
-    const templatePath = path.resolve('../template-script', 'index.ts');
+    const templatePath = path.resolve('../template-script', 'template-index.ts');
     const modifiedScriptPath = path.resolve('../template-script', 'modified-index.ts');
 
     try {
@@ -26,13 +26,20 @@ export async function POST(req: NextRequest) {
     }
 
     // Build and run Docker container
-    // exec('docker-compose up --build -d', { cwd: path.resolve('.') }, (error, stdout, stderr) => {
-    //     if (error) {
-    //         console.error(`Error: ${stderr}`);
-    //         return NextResponse.json({ error: 'Docker execution failed' }, { status: 500 });
-    //     }
+    exec('docker compose up --build', { cwd: path.resolve('../') }, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error: ${stderr}`);
+            return NextResponse.json({ error: 'Docker execution failed' }, { status: 500 });
+        }
 
-    //     console.log(stdout);
-    //     return NextResponse.json({ message: 'Script started in Docker container' });
-    // });
+        console.log('Docker build logs:', stdout);
+
+        if (stderr) {
+            console.error('Docker error logs:', stderr);
+        }
+
+        return NextResponse.json({ message: 'Script started in Docker container' });
+    });
+
+    return NextResponse.json({ message: 'Script modified successfully' });
 }

@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  template-script:
+    build:
+      context: ./template-script   # Build the Docker image from the template-script folder
+      dockerfile: Dockerfile       # Optionally specify the Dockerfile if it's named differently
+    volumes:
+      - ./template-script:/app     # Mount the template-script folder to /app inside the container
+    command: ["bun", "run", "modified-index.ts"]  # Run the modified script when the container starts
+    working_dir: /app             # Set the working directory inside the container
